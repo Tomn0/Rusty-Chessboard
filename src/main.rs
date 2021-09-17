@@ -1,5 +1,6 @@
 use std::fmt;
 
+// FIXME: duplicate code!!!
 pub struct BitBoard(u64);
 
 impl BitBoard {

@@ -1,45 +1,88 @@
-    // data structures
+use std::fmt;
 
-    // chess board 8x8 + protective squares (two rows on top and bottom and one on every board) = 120 squares
-    
-    // pieces
-    pub enum PiecesTypes {EMPTY, Pawn, Knight, Bishop, Rook, Queen, King};
-    enum Colors {WHITE, BLACK, BOTH};
-    enum Rows {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE};
-    enum Columns {RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NONE};
+pub struct BitBoard(u64);
 
-    enum Squares {
-        A1 = 21, B1, C1, D1, E1, F1, G1, H1,
-        A2 = 31, B2, C2, D2, E2, F2, G2, H2,
-        A3 = 41, B3, C3, D3, E3, F3, G3, H3,
-        A4 = 51, B4, C4, D4, E4, F4, G4, H4,
-        A5 = 61, B5, C5, D5, E5, F5, G5, H5,
-        A6 = 71, B6, C6, D6, E6, F6, G6, H6,
-        A7 = 81, B7, C7, D7, E7, F7, G7, H7,
-        A8 = 91, B8, C8, D8, E8, F8, G8, H8, 
-        NO_SQ
-    };
-
-    enum Bools {FALSE, TRUE};
-
-    struct Game {
-        event: 
-        [Event "Chess.com Staff Tournament #2"]
-        [Site "Chess.com"]
-        [Date "2010.10.26"]
-        [White "ACEChess"]
-        [Black "piotr"]
-        [Result "1-0"]
-        [WhiteElo "2037"]
-        [BlackElo "2125"]
-        [TimeControl "1 in 3 days"]
-        [Termination "ACEChess won by resignation"]
+impl BitBoard {
+    pub fn new (b: u64) -> BitBoard {
+        return BitBoard(b);
     }
 
-    enum Outcome {
-        White_Won = String.from("1:0"),
-        Black_Won = String::from("0:1"),
-        Draw = String::from("0.5:0.5")
+    pub fn display(&self) {
+        let BitBoard(v) = &self;    // destructuring let
+        println!("{:#025b}", v)
+    }
+}
+
+
+
+impl fmt::Display for BitBoard {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut repr = String::new();
+        for x in 0..64 {
+            if self.0 & ( 1u64 << x ) == 1u64 << x {
+                repr.push('1');
+            }
+            else {
+                repr.push('-');
+            }
+            
+            
+            if x % 8 == 7 {
+                repr.push('\n');
+            }
+        }
+        write!(f, "{}", repr)
+    }
+}
+
+pub enum PiecesTypes {EMPTY, Pawn, Knight, Bishop, Rook, Queen, King};
+
+struct Board {
+    whitePawns: BitBoard;
+    whiteKnights: BitBoard;
+    whiteBishops: BitBoard;
+    whiteRooks: BitBoard;
+    whiteQueens: BitBoard;
+    whiteKing: BitBoard;
+ 
+    blackPawns: BitBoard;
+    blackKnights: BitBoard;
+    blackBishops: BitBoard;
+    blackRooks: BitBoard;
+    blackQueens: BitBoard;
+    blackKing: BitBoard;
+
+    board: BitBoard;
+}
+
+
+impl Board {
+    fn initial_setup(&self) {
+        &self.whitePawns = BitBoard::new(0b0000000011111111000000000000000000000000000000000000000000000000);
+        &self.whiteKnights = BitBoard::new(0b0100001000000000000000000000000000000000000000000000000000000000);
+        &self.whiteBishops = BitBoard::new(0b0010010000000000000000000000000000000000000000000000000000000000);
+        &self.whiteRooks = BitBoard::new(0b1000000100000000000000000000000000000000000000000000000000000000);
+        &self.whiteQueens = BitBoard::new(0b0001000000000000000000000000000000000000000000000000000000000000);
+        &self.whiteKing = BitBoard::new(0b0000100000000000000000000000000000000000000000000000000000000000);
+     
+        &self.blackPawns = BitBoard::new(0b0000000000000000000000000000000000000000000000001111111100000000);
+        &self.blackKnights = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000001000010);
+        &self.blackBishops = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000100100);
+        &self.blackRooks = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000010000001);
+        &self.blackQueens = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000010000);
+        &self.blackKing = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000001000);
+        
+        &self.board = BitBoard::new(0b111111111111111100000000000000000000000000000000111111111111111);
+
     }
 
-// left: https://www.youtube.com/watch?v=3uBCUF_qHcg
+    fn generate_moves(&self, piece: PiecesTypes) {
+        match piece {
+            PiecesTypes.Pawn =>{
+                let pawn_targets = ( &self.whitePawns << 8 ) & !&self.board;
+                // TODO: pseudo_legal and legal moves
+            }
+        
+        }
+    }
+}
