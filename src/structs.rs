@@ -3,7 +3,7 @@
     // chess board 8x8 + protective squares (two rows on top and bottom and one on every board) = 120 squares
     
     // pieces
-    enum PiecesTypes {EMPTY, Pawn, Knight, Bishop, Rook, Queen, King};
+    pub enum PiecesTypes {EMPTY, Pawn, Knight, Bishop, Rook, Queen, King};
     enum Colors {WHITE, BLACK, BOTH};
     enum Rows {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE};
     enum Columns {RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NONE};
@@ -22,8 +22,24 @@
 
     enum Bools {FALSE, TRUE};
 
-    struct Board {
-        
+    struct Game {
+        event: 
+        [Event "Chess.com Staff Tournament #2"]
+        [Site "Chess.com"]
+        [Date "2010.10.26"]
+        [White "ACEChess"]
+        [Black "piotr"]
+        [Result "1-0"]
+        [WhiteElo "2037"]
+        [BlackElo "2125"]
+        [TimeControl "1 in 3 days"]
+        [Termination "ACEChess won by resignation"]
+    }
+
+    enum Outcome {
+        White_Won = String.from("1:0"),
+        Black_Won = String::from("0:1"),
+        Draw = String::from("0.5:0.5")
     }
 
 // left: https://www.youtube.com/watch?v=3uBCUF_qHcg

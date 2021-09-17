@@ -1,5 +1,5 @@
 [package]
-name = "Rusty-Chessboard"
+name = "rusty_chessboard"
 version = "0.1.0"
 authors = ["Tomn0 <m2foster@protonmail.com>"]
 edition = "2018"
