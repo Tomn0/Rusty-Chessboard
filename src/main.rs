@@ -7,5 +7,8 @@ mod board;
 pub use board::board::Board;
 
 fn main() {
-    let board = Board::new();
+    let mut board = Board::new();
+    board = board.start_game();
+    println!("{}", &board.white_pawns);
+
 }

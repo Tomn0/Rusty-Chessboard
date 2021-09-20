@@ -32,7 +32,7 @@ pub mod board_structure {
 
     // TODO: a razie do cech używane są obiekty jako wypozyczone i zwracany jest zawsze nowy Bitboard - mieć na uwadze czy to nie spowoduje problemów w dalszej perspektywie
     // BitBoard traits
-    impl fmt::Display for BitBoard {
+    impl fmt::Display for &BitBoard {
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
             let mut repr = String::new();
             for x in 0..64 {
