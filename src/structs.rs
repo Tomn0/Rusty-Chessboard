@@ -1,88 +1,105 @@
-use std::fmt;
+// some BitBoard ideas taken from: https://docs.rs/chess/0.3.4/src/chess/.cargo/registry/src/github.com-1ecc6299db9ec823/chess-0.3.4/src/bitboard.rs.html#11
 
-pub struct BitBoard(u64);
+pub mod board_structure {
+    use std::fmt;
 
-impl BitBoard {
-    pub fn new (b: u64) -> BitBoard {
-        return BitBoard(b);
-    }
+    pub struct BitBoard(u64);
 
-    pub fn display(&self) {
-        let BitBoard(v) = &self;    // destructuring let
-        println!("{:#025b}", v)
-    }
-}
-
-
-
-impl fmt::Display for BitBoard {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let mut repr = String::new();
-        for x in 0..64 {
-            if self.0 & ( 1u64 << x ) == 1u64 << x {
-                repr.push('1');
-            }
-            else {
-                repr.push('-');
-            }
-            
-            
-            if x % 8 == 7 {
-                repr.push('\n');
-            }
+    impl BitBoard {
+        pub fn new (b: u64) -> BitBoard {
+            return BitBoard(b);
         }
-        write!(f, "{}", repr)
-    }
-}
 
-pub enum PiecesTypes {EMPTY, Pawn, Knight, Bishop, Rook, Queen, King};
+        pub fn get_u64(&self) -> &u64 {
+            let BitBoard(v) = &self;    // destructuring let
+            v
+        }
 
-struct Board {
-    whitePawns: BitBoard;
-    whiteKnights: BitBoard;
-    whiteBishops: BitBoard;
-    whiteRooks: BitBoard;
-    whiteQueens: BitBoard;
-    whiteKing: BitBoard;
- 
-    blackPawns: BitBoard;
-    blackKnights: BitBoard;
-    blackBishops: BitBoard;
-    blackRooks: BitBoard;
-    blackQueens: BitBoard;
-    blackKing: BitBoard;
+        // TODO
+        pub fn update(self, new_v: u64) {
+            let BitBoard(v) = self;
 
-    board: BitBoard;
-}
+        }
 
-
-impl Board {
-    fn initial_setup(&self) {
-        &self.whitePawns = BitBoard::new(0b0000000011111111000000000000000000000000000000000000000000000000);
-        &self.whiteKnights = BitBoard::new(0b0100001000000000000000000000000000000000000000000000000000000000);
-        &self.whiteBishops = BitBoard::new(0b0010010000000000000000000000000000000000000000000000000000000000);
-        &self.whiteRooks = BitBoard::new(0b1000000100000000000000000000000000000000000000000000000000000000);
-        &self.whiteQueens = BitBoard::new(0b0001000000000000000000000000000000000000000000000000000000000000);
-        &self.whiteKing = BitBoard::new(0b0000100000000000000000000000000000000000000000000000000000000000);
-     
-        &self.blackPawns = BitBoard::new(0b0000000000000000000000000000000000000000000000001111111100000000);
-        &self.blackKnights = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000001000010);
-        &self.blackBishops = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000100100);
-        &self.blackRooks = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000010000001);
-        &self.blackQueens = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000010000);
-        &self.blackKing = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000001000);
-        
-        &self.board = BitBoard::new(0b111111111111111100000000000000000000000000000000111111111111111);
-
-    }
-
-    fn generate_moves(&self, piece: PiecesTypes) {
-        match piece {
-            PiecesTypes.Pawn =>{
-                let pawn_targets = ( &self.whitePawns << 8 ) & !&self.board;
-                // TODO: pseudo_legal and legal moves
-            }
-        
+        // FIXME na razie nie można zmieniać wartości w poszczególej tablicy - jeśli chcemy zaktualizować pozycję tworzymy nowy obiekt BitBoard() i zastępujemy nim stary obiekt na szachownicy
+        fn write_u64(self, new_val: u64) -> u64 {
+            let BitBoard(mut v) = self;
+            v = new_val;
+            v
         }
     }
+
+
+    // TODO: a razie do cech używane są obiekty jako wypozyczone i zwracany jest zawsze nowy Bitboard - mieć na uwadze czy to nie spowoduje problemów w dalszej perspektywie
+    // BitBoard traits
+    impl fmt::Display for BitBoard {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            let mut repr = String::new();
+            for x in 0..64 {
+                if self.0 & ( 1u64 << x ) == 1u64 << x {
+                    repr.push('1');
+                }
+                else {
+                    repr.push('-');
+                }
+                
+                
+                if x % 8 == 7 {
+                    repr.push('\n');
+                }
+            }
+            write!(f, "{}", repr)
+        }
+    }
+
+    impl std::ops::Shl<i32> for &BitBoard {
+        type Output = BitBoard;
+
+        fn shl(self, other: i32) -> BitBoard {
+            let val = self.get_u64();
+            // let right = other.get_u64();
+            
+            let shifted = val << other;
+            BitBoard::new(shifted)
+        }
+    }
+
+    impl std::ops::Shr<i32> for &BitBoard {
+        type Output = BitBoard;
+
+        fn shr(self, other: i32) -> BitBoard {
+            let val = self.get_u64();
+            // let right = other.get_u64();
+            
+            let shifted = val >> other;
+            BitBoard::new(shifted)
+        }
+    }
+
+    impl std::ops::Not for &BitBoard {
+        type Output = BitBoard;
+
+        fn not(self) -> BitBoard {
+            let val = self.get_u64();
+
+            let neg = !val;
+            BitBoard::new(neg)
+        }
+    }
+
+    impl std::ops::BitAnd for &BitBoard {
+        type Output = BitBoard;
+
+        fn bitand(self, other: &BitBoard) -> BitBoard {
+            let left = self.get_u64();
+            let right = other.get_u64();
+
+            BitBoard::new(left & right)
+        }
+
+    }
+
+    enum Color {WHITE, BLACK, BOTH}
+
+
 }
