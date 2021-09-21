@@ -15,17 +15,9 @@ pub mod board_structure {
             v
         }
 
-        // TODO
-        pub fn update(self, new_v: u64) {
-            let BitBoard(v) = self;
-
-        }
-
-        // FIXME na razie nie można zmieniać wartości w poszczególej tablicy - jeśli chcemy zaktualizować pozycję tworzymy nowy obiekt BitBoard() i zastępujemy nim stary obiekt na szachownicy
-        fn write_u64(self, new_val: u64) -> u64 {
-            let BitBoard(mut v) = self;
-            v = new_val;
-            v
+        // use this function to update BitBoard value
+        pub fn update(mut self, new_v: u64) {
+            self.0 = new_v;
         }
     }
 
@@ -96,7 +88,17 @@ pub mod board_structure {
 
             BitBoard::new(left & right)
         }
+    }
 
+    impl std::ops::BitOr for &BitBoard {
+        type Output = BitBoard;
+
+        fn bitor(self, other: &BitBoard) -> BitBoard {
+            let left = self.get_u64();
+            let right = other.get_u64();
+
+            BitBoard::new(left | right)
+        }
     }
 
     enum Color {WHITE, BLACK, BOTH}

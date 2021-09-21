@@ -27,7 +27,7 @@ pub mod board {
 
     }
 
-    pub enum PiecesTypes {EMPTY, Pawn, Knight, Bishop, Rook, Queen, King}
+    pub enum PieceType {EMPTY, Pawn, Knight, Bishop, Rook, Queen, King}
 
     impl Board {
         pub fn new() -> Board {
@@ -79,18 +79,18 @@ pub mod board {
             self
         }
 
-        fn generate_moves(&self, piece: PiecesTypes) {
+        fn generate_moves(&self, piece: PieceType) {
             match piece {
-                PiecesTypes::Pawn =>{
+                PieceType::Pawn =>{
                     let pawn_targets = &( &self.white_pawns << 8i32 ) & &( !&self.chessboard );
                     // TODO: pseudo_legal and legal moves
                 }
-                PiecesTypes::Knight =>{}
-                PiecesTypes::Bishop =>{}
-                PiecesTypes::Rook =>{}
-                PiecesTypes::Queen =>{}
-                PiecesTypes::King =>{}
-                PiecesTypes::EMPTY =>{}
+                PieceType::Knight =>{}
+                PieceType::Bishop =>{}
+                PieceType::Rook =>{}
+                PieceType::Queen =>{}
+                PieceType::King =>{}
+                PieceType::EMPTY =>{}
             }
         }
     }
