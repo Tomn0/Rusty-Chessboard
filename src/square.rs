@@ -95,3 +95,26 @@ pub mod square {
     ];
     
 }
+
+pub enum File {
+    First,
+    Second,
+    Third,
+    Forth,
+    Fifth,
+    Sixth,
+    Seventh,
+    Eighth
+
+}
+
+pub enum Rank {
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H
+}

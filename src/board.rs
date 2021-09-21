@@ -52,7 +52,7 @@ pub mod board {
 
     }
 
-    pub enum PieceType {EMPTY, Pawn, Knight, Bishop, Rook, Queen, King}
+    pub enum PieceType {Pawn, Knight, Bishop, Rook, Queen, King}
 
     impl Board {
         pub fn new() -> Board {
@@ -79,6 +79,7 @@ pub mod board {
         pub fn start_game(self) -> Board{
             // TODO: wymyslić pętlę gry i poprawić zwracanie!!
             self.initial_setup()
+            
 
         }
 
@@ -105,7 +106,7 @@ pub mod board {
             // self.black_rooks = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000010000001);
             // self.black_queens = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000010000);
             // self.black_king = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000001000);
-           
+    
             self.black_pawns = BitBoard::new(0b0000000011111111000000000000000000000000000000000000000000000000);
             self.black_knights = BitBoard::new(0b0100001000000000000000000000000000000000000000000000000000000000);
             self.black_bishops = BitBoard::new(0b0010010000000000000000000000000000000000000000000000000000000000);
@@ -120,20 +121,93 @@ pub mod board {
             self
         }
 
-        fn generate_moves(&self, piece: PieceType, side: Color) {
+        // jak generować ruchy w bitboardach? Też wszystkie razem czy dla każdej figury osobno?
+        // a jak osobno to w jaki sposób te ruchy przechowywać
+        fn generate_moves(&self, piece: PieceType, side: Color, square: Square, board: Board) -> BitBoard{
             match piece {
                 PieceType::Pawn =>{
                     let pawn_targets = &( &self.white_pawns << 8i32 ) & &( !&self.chessboard );
                     // TODO: pseudo_legal and legal moves
-                    // pseudo_legal - select all empty squares
+                    // pseudo_legal - select empty squares
+                    // advance move - TODO -> first move by two squares
+                    let pawns: BitBoard;
+                    if let Color::White = side {
+                        pawns = board.white_pawns;
+                    }
+                    else {
+                        pawns = board.black_pawns;
+                    }
+
+                    let mut moves = BitBoard::new((pawns.get_u64() & square.id as u64) << 8u8);
+                    moves
+                    // FIXME
 
                 }
-                PieceType::Knight =>{}
-                PieceType::Bishop =>{}
-                PieceType::Rook =>{}
-                PieceType::Queen =>{}
-                PieceType::King =>{}
-                PieceType::EMPTY =>{}
+                PieceType::Knight =>{
+                    // TODO
+                    let moves: BitBoard = BitBoard::new(0);
+                    let knights: BitBoard;
+                    if let Color::White = side {
+                        knights = board.white_knights;
+                    }
+                    else {
+                        knights = board.black_knights;
+                    }
+
+                    moves 
+                }
+                PieceType::Bishop =>{
+                    // TODO
+                    let moves: BitBoard = BitBoard::new(0);
+                    let bishops: BitBoard;
+                    if let Color::White = side {
+                        bishops = board.white_bishops;
+                    }
+                    else {
+                        bishops = board.black_bishops;
+                    }
+
+                    moves 
+                }
+                PieceType::Rook =>{
+                    // TODO
+                    let moves: BitBoard = BitBoard::new(0);
+                    let rooks: BitBoard;
+                    if let Color::White = side {
+                        rooks = board.white_rooks;
+                    }
+                    else {
+                        rooks = board.black_rooks;
+                    }
+
+                    moves 
+                }
+                PieceType::Queen =>{
+                    // TODO
+                    let moves: BitBoard = BitBoard::new(0);
+                    let queens: BitBoard;
+                    if let Color::White = side {
+                        queens = board.white_queens;
+                    }
+                    else {
+                        queens = board.black_queens;
+                    }
+
+                    moves 
+                }
+                PieceType::King =>{
+                    // TODO
+                    let moves: BitBoard = BitBoard::new(0);
+                    let king: BitBoard;
+                    if let Color::White = side {
+                        king = board.white_king;
+                    }
+                    else {
+                        king = board.black_king;
+                    }
+
+                    moves 
+                }
             }
         }
         fn pawn_attacks(side: Color) {
