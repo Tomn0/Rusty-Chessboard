@@ -42,4 +42,70 @@
         Draw = String::from("0.5:0.5")
     }
 
+        // pub const A1: u8 = 1;
+    // pub const B1 = 2;
+    // pub const C1 = 3; 
+    // pub const D1 = 4; 
+    // pub const E1 = 5; 
+    // pub const F1; 
+    // pub const G1; 
+    // pub const H1;
+    // pub const A2 = 9; 
+    // pub const B2;
+    // pub const C2; 
+    // pub const D2; 
+    // pub const E2; 
+    // pub const F2; 
+    // pub const G2; 
+    // pub const H2;
+    // pub const A3 = 18; 
+    // pub const B3;
+    // pub const C3; 
+    // pub const D3; 
+    // pub const E3; 
+    // pub const F3; 
+    // pub const G3; 
+    // pub const H3;
+    // pub const A4 = 27; 
+    // pub const B4;
+    // pub const C4; 
+    // pub const D4; 
+    // pub const E4; 
+    // pub const F4; 
+    // pub const G4; 
+    // pub const H4;
+    // pub const A5 = 36; 
+    // pub const B5;
+    // pub const C5; 
+    // pub const D5; 
+    // pub const E5; 
+    // pub const F5; 
+    // pub const G5; 
+    // pub const H5;
+    // pub const A6 = 45; 
+    // pub const B6;
+    // pub const C6; 
+    // pub const D6; 
+    // pub const E6; 
+    // pub const F6; 
+    // pub const G6; 
+    // pub const H6;
+    // pub const A7 = 54; 
+    // pub const B7;
+    // pub const C7;
+    // pub const D7; 
+    // pub const E7; 
+    // pub const F7; 
+    // pub const G7; 
+    // pub const H7;
+    // pub const A8 = 63;
+    // pub const B8;
+    // pub const C8; 
+    // pub const D8; 
+    // pub const E8; 
+    // pub const F8; 
+    // pub const G8; 
+    // pub const H8; 
+    // NoSQ
+
 // left: https://www.youtube.com/watch?v=3uBCUF_qHcg

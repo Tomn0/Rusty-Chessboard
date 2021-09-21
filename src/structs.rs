@@ -27,17 +27,23 @@ pub mod board_structure {
     impl fmt::Display for &BitBoard {
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
             let mut repr = String::new();
-            for x in 0..64 {
+            let mut line = String::new();
+            for x in (0..64).rev() {
                 if self.0 & ( 1u64 << x ) == 1u64 << x {
-                    repr.push('1');
+                    line = format!("1{}", line);
+                    // repr.push('1');
                 }
                 else {
-                    repr.push('-');
+                    // repr.push('-');
+                    line = format!("-{}", line);
                 }
                 
                 
-                if x % 8 == 7 {
-                    repr.push('\n');
+                if x % 8 == 0 {
+                    // repr.push('\n');
+                    line = format!("\n{}", line);
+                    repr = format!("{}{}", repr, line);
+                    line = String::new();
                 }
             }
             write!(f, "{}", repr)
