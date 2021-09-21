@@ -1,9 +1,33 @@
 
 pub mod board {
-
     pub use crate::structs::board_structure::BitBoard;
 
-    enum Color {WHITE, BLACK, EMPTY}
+
+/**********************************\
+ ==================================
+ 
+                Enums
+ 
+ ==================================
+\**********************************/    
+
+    pub enum Color {White, Black, Empty}
+
+
+    // pub fn get_bit(bitboard: BitBoard, square: Squares) {
+    //     let mut bitboard_u64 = bitboard.get_u64();
+    //     bitboard_u64 & (1u64 << square)
+
+    // }
+
+
+/**********************************\
+ ==================================
+ 
+            Structs
+ 
+ ==================================
+\**********************************/
 
     pub struct Board {
         chessboard: BitBoard,
@@ -47,7 +71,7 @@ pub mod board {
                 black_king:  BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000001000),
                 
                 chessboard:  BitBoard::new(0b111111111111111100000000000000000000000000000000111111111111111),
-                side_to_play: Color::EMPTY,
+                side_to_play: Color::Empty,
             }
         }
 
@@ -74,16 +98,18 @@ pub mod board {
             
             self.chessboard = BitBoard::new(0b111111111111111100000000000000000000000000000000111111111111111);
 
-            self.side_to_play = Color::WHITE;
+            self.side_to_play = Color::White;
 
             self
         }
 
-        fn generate_moves(&self, piece: PieceType) {
+        fn generate_moves(&self, piece: PieceType, side: Color) {
             match piece {
                 PieceType::Pawn =>{
                     let pawn_targets = &( &self.white_pawns << 8i32 ) & &( !&self.chessboard );
                     // TODO: pseudo_legal and legal moves
+                    // pseudo_legal - select all empty squares
+
                 }
                 PieceType::Knight =>{}
                 PieceType::Bishop =>{}
@@ -93,7 +119,17 @@ pub mod board {
                 PieceType::EMPTY =>{}
             }
         }
-    }
+        fn pawn_attacks(side: Color) {
 
-    
+            // result attack bitboard
+            let attacks = 0u64;
+
+            // set piece on board
+
+            // white pawns
+
+            // black pawns
+        }
+
+    }    
 }

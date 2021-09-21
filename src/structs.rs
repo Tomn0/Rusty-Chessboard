@@ -100,8 +100,4 @@ pub mod board_structure {
             BitBoard::new(left | right)
         }
     }
-
-    enum Color {WHITE, BLACK, BOTH}
-
-
 }
