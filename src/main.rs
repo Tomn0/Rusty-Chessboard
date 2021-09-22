@@ -21,13 +21,11 @@ fn main() {
     
     // println!("{}", &BitBoard::new(get_bit(test, &BOARD_SQUARES[9])));
     
-    let result = board.generate_moves(PieceType::Pawn, Color::White, get_square("A2"));
+    let result = board.generate_moves(PieceType::Pawn, Color::White, get_square("H2"));
 
     println!("{}", &result);
 
 }
-
-
 
 // useful binary <-> decimal convertion:
 // 1000000000000000000000000000000000000000000000000000000000000000 <-> 9223372036854775808

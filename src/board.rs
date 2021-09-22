@@ -104,7 +104,7 @@ pub mod board {
             self.black_queens = BitBoard::new(0b0001000000000000000000000000000000000000000000000000000000000000);
             self.black_king = BitBoard::new(0b0000100000000000000000000000000000000000000000000000000000000000);
 
-            self.chessboard = BitBoard::new(0b111111111111111100000000000000000000000000000000111111111111111);
+            self.chessboard = BitBoard::new(0b1111111111111111000000000000000000000000000000001111111111111111);
 
             self.side_to_play = Color::White;
 
@@ -121,6 +121,7 @@ pub mod board {
 
         // jak generować ruchy w bitboardach? Też wszystkie razem czy dla każdej figury osobno?
         // a jak osobno to w jaki sposób te ruchy przechowywać
+        // FIXME - funkcja nie sprawdza w pełni czy dana figura rzeczywiście znajduje się na podanym polu
         pub fn generate_moves(&self, piece: PieceType, side: Color, square: Square) -> BitBoard{
             match piece {
                 PieceType::Pawn =>{
@@ -128,26 +129,29 @@ pub mod board {
                     let pawn_targets = &( &self.white_pawns << 8i32 ) & &( !&self.chessboard );
 
                     // TODO: pseudo_legal and legal moves
-                    // pseudo_legal - select empty squares
-                    // advance move - TODO -> first move by two squares
+                    // pseudo_legal - select empty squares - not yet implemented
+                    // advance move
                     let pawns: BitBoard;
                     let mut moves: BitBoard;
                     if let Color::White = side {
                         pawns = self.white_pawns;
                         moves = BitBoard::new((pawns.get_u64() & (1u64 << square.id as u64)) << 8u8);
-                        println!("{}", pawns.get_u64());
-                        println!("{}", 1u64 << square.id as u64);
-                        println!("{}", (pawns.get_u64() & (1u64 << square.id as u64)));
                         // check if first move
                         if Rank::Second == get_rank(square)  {
                             // HACK - dodać do bitboarda ^= (XOR_assign)
-                            moves = &moves ^ &BitBoard::new((1u64 << square.id + 16) |  (1u64 >> square.id + 8));
+                            moves = &moves ^ &BitBoard::new((1u64 << square.id + 16));
                         }
                     }
                     else {
                         pawns = self.black_pawns;
                         moves = BitBoard::new((pawns.get_u64() & (9223372036854775808u64 >> 63 - square.id as u64)) >> 8u8);
+                        if Rank::Seventh == get_rank(square)  {
+                            // HACK - dodać do bitboarda ^= (XOR_assign)
+                            moves = &moves ^ &BitBoard::new((1u64 << (63 - square.id) + 16) |  (1u64 >> (63 - square.id) + 8));
+                        }
                     }
+                    // check if the squares are empty
+                    moves = &moves & &!&self.chessboard;
                     moves
                     // FIXME
 
