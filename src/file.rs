@@ -2,29 +2,29 @@ pub mod file {
     use crate::square::square::{ Square, BOARD_SQUARES };
 
     // possibly redundant with Square struct
+    #[derive(PartialEq)]
     pub enum File {
-        First,
-        Second,
-        Third,
-        Forth,
-        Fifth,
-        Sixth,
-        Seventh,
-        Eighth
-
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+        G,
+        H
     }
 
     pub fn get_file(square: Square) -> File {
         let file: File;
-        match square.id {
-            0..=7 => file = File::First,
-            8..=15 => file = File::Second,
-            16..=23 => file = File::Third,
-            24..=31 => file = File::Forth,
-            32..=39 => file = File::Fifth,
-            40..=47 => file = File::Sixth,
-            48..=55 => file = File::Seventh,
-            56..=63 => file = File::Eighth,
+        match square.id % 8 {
+            0 => file = File::A,
+            1 => file = File::B,
+            2 => file = File::C,
+            3 => file = File::D,
+            4 => file = File::E,
+            5 => file = File::F,
+            6 => file = File::G,
+            7 => file = File::H,
             _ => panic!("square identifier not recognizable!!")
         }
         file

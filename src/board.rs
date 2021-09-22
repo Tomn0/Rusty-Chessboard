@@ -10,7 +10,7 @@ pub mod board {
 /**********************************\
  ==================================
  
-                Enums
+               Enums
  
  ==================================
 \**********************************/    
@@ -29,7 +29,7 @@ pub mod board {
 /**********************************\
  ==================================
  
-            Structs
+              Structs
  
  ==================================
 \**********************************/
@@ -113,7 +113,7 @@ pub mod board {
 /**********************************\
  ==================================
  
-            Moves
+                Moves
  
  ==================================
 \**********************************/
@@ -131,10 +131,18 @@ pub mod board {
                     // pseudo_legal - select empty squares
                     // advance move - TODO -> first move by two squares
                     let pawns: BitBoard;
-                    let moves: BitBoard;
+                    let mut moves: BitBoard;
                     if let Color::White = side {
                         pawns = self.white_pawns;
                         moves = BitBoard::new((pawns.get_u64() & (1u64 << square.id as u64)) << 8u8);
+                        println!("{}", pawns.get_u64());
+                        println!("{}", 1u64 << square.id as u64);
+                        println!("{}", (pawns.get_u64() & (1u64 << square.id as u64)));
+                        // check if first move
+                        if Rank::Second == get_rank(square)  {
+                            // HACK - dodać do bitboarda ^= (XOR_assign)
+                            moves = &moves ^ &BitBoard::new((1u64 << square.id + 16) |  (1u64 >> square.id + 8));
+                        }
                     }
                     else {
                         pawns = self.black_pawns;

@@ -21,7 +21,7 @@ fn main() {
     
     // println!("{}", &BitBoard::new(get_bit(test, &BOARD_SQUARES[9])));
     
-    let result = board.generate_moves(PieceType::Pawn, Color::Black, get_square("C7"));
+    let result = board.generate_moves(PieceType::Pawn, Color::White, get_square("A2"));
 
     println!("{}", &result);
 

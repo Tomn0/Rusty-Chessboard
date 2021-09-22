@@ -23,7 +23,7 @@ pub mod bitboard {
     }
 
 
-    // TODO: a razie do cech używane są obiekty jako wypozyczone i zwracany jest zawsze nowy Bitboard - mieć na uwadze czy to nie spowoduje problemów w dalszej perspektywie
+    // TODO: na razie do cech używane są obiekty jako wypozyczone i zwracany jest zawsze nowy Bitboard - mieć na uwadze czy to nie spowoduje problemów w dalszej perspektywie
     // BitBoard traits
     impl fmt::Display for &BitBoard {
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -105,6 +105,17 @@ pub mod bitboard {
             let right = other.get_u64();
 
             BitBoard::new(left | right)
+        }
+    }
+
+    impl std::ops::BitXor for &BitBoard {
+        type Output = BitBoard;
+        
+        fn bitxor(self, other: &BitBoard) -> BitBoard {
+            let left = self.get_u64();
+            let right = other.get_u64();
+
+            BitBoard::new(left ^ right)
         }
     }
 }
