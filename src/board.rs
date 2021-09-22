@@ -1,7 +1,10 @@
 
 pub mod board {
-    use crate::structs::board_structure::BitBoard;
+    use crate::bitboard::bitboard::BitBoard;
     use crate::square::square::{BOARD_SQUARES, Square};
+    use crate::rank::rank::{Rank, get_rank};
+    use crate::file::file::{File, get_file};
+
 
 
 /**********************************\
@@ -84,14 +87,7 @@ pub mod board {
 
         }
 
-        fn initial_setup(mut self) -> Board{
-            // self.white_pawns = BitBoard::new(0b0000000011111111000000000000000000000000000000000000000000000000);
-            // self.white_knights = BitBoard::new(0b0100001000000000000000000000000000000000000000000000000000000000);
-            // self.white_bishops = BitBoard::new(0b0010010000000000000000000000000000000000000000000000000000000000);
-            // self.white_rooks = BitBoard::new(0b1000000100000000000000000000000000000000000000000000000000000000);
-            // self.white_queens = BitBoard::new(0b0001000000000000000000000000000000000000000000000000000000000000);
-            // self.white_king = BitBoard::new(0b0000100000000000000000000000000000000000000000000000000000000000);
-           
+        fn initial_setup(mut self) -> Board{           
 
             self.white_pawns = BitBoard::new(0b0000000000000000000000000000000000000000000000001111111100000000);
             self.white_knights = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000001000010);
@@ -101,13 +97,6 @@ pub mod board {
             self.white_king = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000001000);
 
 
-            // self.black_pawns = BitBoard::new(0b0000000000000000000000000000000000000000000000001111111100000000);
-            // self.black_knights = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000001000010);
-            // self.black_bishops = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000100100);
-            // self.black_rooks = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000010000001);
-            // self.black_queens = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000010000);
-            // self.black_king = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000001000);
-    
             self.black_pawns = BitBoard::new(0b0000000011111111000000000000000000000000000000000000000000000000);
             self.black_knights = BitBoard::new(0b0100001000000000000000000000000000000000000000000000000000000000);
             self.black_bishops = BitBoard::new(0b0010010000000000000000000000000000000000000000000000000000000000);
@@ -137,8 +126,7 @@ pub mod board {
                 PieceType::Pawn =>{
                     // UNUSED
                     let pawn_targets = &( &self.white_pawns << 8i32 ) & &( !&self.chessboard );
-                    // println!("First pawn targets: ");
-                    // println!("{}", &pawn_targets);
+
                     // TODO: pseudo_legal and legal moves
                     // pseudo_legal - select empty squares
                     // advance move - TODO -> first move by two squares
@@ -149,19 +137,9 @@ pub mod board {
                         moves = BitBoard::new((pawns.get_u64() & (1u64 << square.id as u64)) << 8u8);
                     }
                     else {
-                        // println!("{}", )
                         pawns = self.black_pawns;
                         moves = BitBoard::new((pawns.get_u64() & (9223372036854775808u64 >> 63 - square.id as u64)) >> 8u8);
-                        // println!("{}", (9223372036854775808u64 >> square.id));
-                        // println!("{}", 9223372036854775808u64 >> (63 - square.id) as u64);
-                        // println!("{}", pawns.get_u64());
-                        
                     }
-                    // println!("pawns.get_u64 = {}", pawns.get_u64());
-                    // println!("pawns.get_u64 & square.id as u64 {}", pawns.get_u64() & square.id as u64);
-
-
-                    
                     moves
                     // FIXME
 

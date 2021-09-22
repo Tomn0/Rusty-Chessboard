@@ -1,13 +1,16 @@
 // use std::fmt;
 
-mod structs;
-pub use structs::board_structure::BitBoard;
+mod bitboard;
+pub use bitboard::bitboard::BitBoard;
 
 mod board;
 pub use board::board::{Board, get_bit, PieceType, Color};
 
 mod square;
 pub use square::square::{Square, BOARD_SQUARES, get_square};
+
+mod rank;
+mod file;
 
 
 fn main() {

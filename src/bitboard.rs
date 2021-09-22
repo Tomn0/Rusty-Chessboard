@@ -1,6 +1,6 @@
 // some BitBoard ideas taken from: https://docs.rs/chess/0.3.4/src/chess/.cargo/registry/src/github.com-1ecc6299db9ec823/chess-0.3.4/src/bitboard.rs.html#11
 
-pub mod board_structure {
+pub mod bitboard {
     use std::fmt;
 
     #[derive(Copy, Clone)]

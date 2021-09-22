@@ -25,8 +25,6 @@ pub mod square {
         }
     }
 
-
-
     pub const BOARD_SQUARES: [Square; NUM_OF_SQUARES] = [
     Square{id: 0, coord: "A1", color: Color::Black},
     Square{id: 1, coord: "B1", color: Color::White},
@@ -108,27 +106,4 @@ pub mod square {
     Square{id: 63, coord: "H8", color: Color::Black}
     ];
     
-}
-
-pub enum File {
-    First,
-    Second,
-    Third,
-    Forth,
-    Fifth,
-    Sixth,
-    Seventh,
-    Eighth
-
-}
-
-pub enum Rank {
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H
 }
