@@ -3,6 +3,7 @@
 pub mod board_structure {
     use std::fmt;
 
+    #[derive(Copy, Clone)]
     pub struct BitBoard(u64);
 
     impl BitBoard {

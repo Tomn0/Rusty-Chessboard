@@ -12,10 +12,11 @@ pub mod board {
  ==================================
 \**********************************/    
 
+    #[derive(Copy, Clone)]
     pub enum Color {White, Black, Empty}
 
 
-    pub fn get_bit(bitboard: BitBoard, square: &Square) -> u64 {
+    pub fn get_bit(bitboard: &BitBoard, square: &Square) -> u64 {
         let bitboard_u64 = bitboard.get_u64();
         bitboard_u64 & (1u64 << square.id)
 
@@ -120,25 +121,47 @@ pub mod board {
 
             self
         }
+/**********************************\
+ ==================================
+ 
+            Moves
+ 
+ ==================================
+\**********************************/
+
 
         // jak generować ruchy w bitboardach? Też wszystkie razem czy dla każdej figury osobno?
         // a jak osobno to w jaki sposób te ruchy przechowywać
-        fn generate_moves(&self, piece: PieceType, side: Color, square: Square, board: Board) -> BitBoard{
+        pub fn generate_moves(&self, piece: PieceType, side: Color, square: Square) -> BitBoard{
             match piece {
                 PieceType::Pawn =>{
+                    // UNUSED
                     let pawn_targets = &( &self.white_pawns << 8i32 ) & &( !&self.chessboard );
+                    // println!("First pawn targets: ");
+                    // println!("{}", &pawn_targets);
                     // TODO: pseudo_legal and legal moves
                     // pseudo_legal - select empty squares
                     // advance move - TODO -> first move by two squares
                     let pawns: BitBoard;
+                    let moves: BitBoard;
                     if let Color::White = side {
-                        pawns = board.white_pawns;
+                        pawns = self.white_pawns;
+                        moves = BitBoard::new((pawns.get_u64() & (1u64 << square.id as u64)) << 8u8);
                     }
                     else {
-                        pawns = board.black_pawns;
+                        // println!("{}", )
+                        pawns = self.black_pawns;
+                        moves = BitBoard::new((pawns.get_u64() & (9223372036854775808u64 >> 63 - square.id as u64)) >> 8u8);
+                        // println!("{}", (9223372036854775808u64 >> square.id));
+                        // println!("{}", 9223372036854775808u64 >> (63 - square.id) as u64);
+                        // println!("{}", pawns.get_u64());
+                        
                     }
+                    // println!("pawns.get_u64 = {}", pawns.get_u64());
+                    // println!("pawns.get_u64 & square.id as u64 {}", pawns.get_u64() & square.id as u64);
 
-                    let mut moves = BitBoard::new((pawns.get_u64() & square.id as u64) << 8u8);
+
+                    
                     moves
                     // FIXME
 
@@ -148,10 +171,10 @@ pub mod board {
                     let moves: BitBoard = BitBoard::new(0);
                     let knights: BitBoard;
                     if let Color::White = side {
-                        knights = board.white_knights;
+                        knights = self.white_knights;
                     }
                     else {
-                        knights = board.black_knights;
+                        knights = self.black_knights;
                     }
 
                     moves 
@@ -161,10 +184,10 @@ pub mod board {
                     let moves: BitBoard = BitBoard::new(0);
                     let bishops: BitBoard;
                     if let Color::White = side {
-                        bishops = board.white_bishops;
+                        bishops = self.white_bishops;
                     }
                     else {
-                        bishops = board.black_bishops;
+                        bishops = self.black_bishops;
                     }
 
                     moves 
@@ -174,10 +197,10 @@ pub mod board {
                     let moves: BitBoard = BitBoard::new(0);
                     let rooks: BitBoard;
                     if let Color::White = side {
-                        rooks = board.white_rooks;
+                        rooks = self.white_rooks;
                     }
                     else {
-                        rooks = board.black_rooks;
+                        rooks = self.black_rooks;
                     }
 
                     moves 
@@ -187,10 +210,10 @@ pub mod board {
                     let moves: BitBoard = BitBoard::new(0);
                     let queens: BitBoard;
                     if let Color::White = side {
-                        queens = board.white_queens;
+                        queens = self.white_queens;
                     }
                     else {
-                        queens = board.black_queens;
+                        queens = self.black_queens;
                     }
 
                     moves 
@@ -200,10 +223,10 @@ pub mod board {
                     let moves: BitBoard = BitBoard::new(0);
                     let king: BitBoard;
                     if let Color::White = side {
-                        king = board.white_king;
+                        king = self.white_king;
                     }
                     else {
-                        king = board.black_king;
+                        king = self.black_king;
                     }
 
                     moves 

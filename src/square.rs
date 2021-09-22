@@ -5,10 +5,24 @@ pub mod square {
     pub const SIZE: usize = 8;
     pub const NUM_OF_SQUARES: usize = 64;
 
+    #[derive(Copy, Clone)]
     pub struct Square<'a> {
         pub id: u8,
         pub coord: &'a str,
         pub color: Color,
+    }
+
+    pub fn get_square(coord: &str) -> Square{
+        let mut square: Option<Square> = None;
+        for f in BOARD_SQUARES.iter() {
+            if coord == f.coord {
+                square = Some(*f);
+            }
+        }
+        match square {
+            None => panic!("There is no such square!"),
+            Some(square) => return square,
+        }
     }
 
 
