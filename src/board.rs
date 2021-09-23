@@ -35,7 +35,7 @@ pub mod board {
 \**********************************/
 
     pub struct Board {
-        chessboard: BitBoard,
+        pub chessboard: BitBoard,
 
         pub white_pawns: BitBoard,
         white_knights: BitBoard,
