@@ -7,6 +7,14 @@ pub mod bitboard {
     #[derive(Copy, Clone)]
     pub struct BitBoard(u64);
 
+/**********************************\
+ ==================================
+ 
+            Implementation
+ 
+ ==================================
+\**********************************/ 
+
     impl BitBoard {
         pub fn new (b: u64) -> BitBoard {
             return BitBoard(b);
@@ -62,7 +70,7 @@ pub mod bitboard {
 /**********************************\
  ==================================
  
-            Implementation
+              Traits
  
  ==================================
 \**********************************/ 
@@ -163,16 +171,18 @@ pub mod bitboard {
         }
     }
 
-    impl std::ops::Add for BitBoard {
+    impl std::ops::Add for &BitBoard {
         /// Is used to add two bitboards together.
         /// For example: to count all possible piece moves we sum advance moves with capture moves
-        type Output = ();
+        type Output = BitBoard;
         
         // FIXME: ownership?? maybe borrow is enough
-        fn add(self, other: BitBoard) {
-
+        fn add(self, other: &BitBoard) -> BitBoard {
+            // FIXME: check the case when in both bitboard the same bits are set!!!!
             let sum = self.get_u64() + other.get_u64();
-            self.update(sum);
+            // self.update(sum);
+
+            return BitBoard::new(sum);
         }
     }
 

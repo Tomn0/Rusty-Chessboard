@@ -14,7 +14,7 @@ pub mod file {
         H
     }
 
-    pub fn get_file(square: Square) -> File {
+    pub fn get_file(square: &Square) -> File {
         let file: File;
         match square.id % 8 {
             0 => file = File::A,
