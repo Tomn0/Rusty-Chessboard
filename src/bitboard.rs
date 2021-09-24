@@ -2,6 +2,7 @@
 
 pub mod bitboard {
     use std::fmt;
+    use crate::square::square::{BOARD_SQUARES, Square};
 
     #[derive(Copy, Clone)]
     pub struct BitBoard(u64);
@@ -19,6 +20,13 @@ pub mod bitboard {
         // use this function to update BitBoard value
         pub fn update(mut self, new_v: u64) {
             self.0 = new_v;
+        }
+
+        // function: get_bitboard_from_square
+        pub fn get_bitboard_from_square(square: &Square) -> BitBoard {
+            let new_val: u64 = 1 << square.id;
+            let bitboard = BitBoard::new(new_val);
+            return bitboard;
         }
     }
 
@@ -118,4 +126,81 @@ pub mod bitboard {
             BitBoard::new(left ^ right)
         }
     }
+
+    impl std::ops::Add for BitBoard {
+        /// Is used to add two bitboards together.
+        /// For example: to count all possible piece moves we sum advance moves with capture moves
+        type Output = ();
+        
+        // FIXME: ownership?? maybe borrow is enough
+        fn add(self, other: BitBoard) {
+
+            let sum = self.get_u64() + other.get_u64();
+            self.update(sum);
+        }
+    }
+
+    impl std::cmp::PartialEq for BitBoard {
+        /// Is used to compare two bitboards together.
+        fn eq(&self, other: &BitBoard) -> bool {
+            let left = &self.get_u64();
+            let right = &other.get_u64();
+
+            if left == right {
+                true
+            }
+            else {
+                false
+            }
+        }
+
+        fn ne(&self, other: &BitBoard) -> bool {
+            let left = &self.get_u64();
+            let right = &other.get_u64();
+
+            if left != right {
+                true
+            }
+            else {
+                false
+            }
+        }
+    }
+}
+
+
+
+#[cfg(test)]
+mod tests {
+    use crate::*;
+
+    #[test]
+    fn bitboard_display() {
+        let piece: u64 = 576460752303423488;
+        let bitboard: BitBoard = BitBoard::new(piece);
+        println!("{}", &bitboard);
+
+    }
+    
+    #[test]
+    fn square_to_bitboard() {
+        let square = BOARD_SQUARES[3];
+        println!("{:?}", square);
+        let left = &BitBoard::get_bitboard_from_square(&square);
+        let right = &BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000001000);
+
+        println!("{}", left);
+        println!("{}", right);
+
+        assert_eq!(format!("{}", left), format!("{}", right));
+
+
+    }
+    #[test]
+    fn chessboard_initial_state() {
+        let mut board = Board::new();
+        board = board.start_game();
+        assert_eq!(format!("{}", &board.chessboard), "\n11111111\n11111111\n--------\n--------\n--------\n--------\n11111111\n11111111");
+    }
+
 }

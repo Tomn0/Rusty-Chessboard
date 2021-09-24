@@ -14,7 +14,7 @@ pub mod rank {
         Eighth
     }
 
-    pub fn get_rank(square: Square) -> Rank {
+    pub fn get_rank(square: &Square) -> Rank {
         let rank: Rank;
         match square.id {
             0..=7 => rank = Rank::First,

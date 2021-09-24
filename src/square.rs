@@ -6,6 +6,7 @@ pub mod square {
     pub const NUM_OF_SQUARES: usize = 64;
 
     #[derive(Copy, Clone)]
+    #[derive(Debug)]
     pub struct Square<'a> {
         pub id: u8,
         pub coord: &'a str,

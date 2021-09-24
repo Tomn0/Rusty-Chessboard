@@ -14,7 +14,7 @@ pub mod board {
  
  ==================================
 \**********************************/    
-
+    #[derive(Debug)]
     #[derive(Copy, Clone)]
     pub enum Color {White, Black, Empty}
 
@@ -87,22 +87,22 @@ pub mod board {
 
         }
 
-        fn initial_setup(mut self) -> Board{           
+        fn initial_setup(mut self) -> Board {           
 
             self.white_pawns = BitBoard::new(0b0000000000000000000000000000000000000000000000001111111100000000);
             self.white_knights = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000001000010);
             self.white_bishops = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000100100);
             self.white_rooks = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000010000001);
-            self.white_queens = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000010000);
-            self.white_king = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000001000);
+            self.white_queens = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000001000);
+            self.white_king = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000010000);
 
 
             self.black_pawns = BitBoard::new(0b0000000011111111000000000000000000000000000000000000000000000000);
             self.black_knights = BitBoard::new(0b0100001000000000000000000000000000000000000000000000000000000000);
             self.black_bishops = BitBoard::new(0b0010010000000000000000000000000000000000000000000000000000000000);
             self.black_rooks = BitBoard::new(0b1000000100000000000000000000000000000000000000000000000000000000);
-            self.black_queens = BitBoard::new(0b0001000000000000000000000000000000000000000000000000000000000000);
-            self.black_king = BitBoard::new(0b0000100000000000000000000000000000000000000000000000000000000000);
+            self.black_queens = BitBoard::new(0b0000100000000000000000000000000000000000000000000000000000000000);
+            self.black_king = BitBoard::new(0b0001000000000000000000000000000000000000000000000000000000000000);
 
             self.chessboard = BitBoard::new(0b1111111111111111000000000000000000000000000000001111111111111111);
 
@@ -137,21 +137,23 @@ pub mod board {
                         pawns = self.white_pawns;
                         moves = BitBoard::new((pawns.get_u64() & (1u64 << square.id as u64)) << 8u8);
                         // check if first move
-                        if Rank::Second == get_rank(square)  {
+                        if Rank::Second == get_rank(&square)  {
                             // HACK - dodać do bitboarda ^= (XOR_assign)
-                            moves = &moves ^ &BitBoard::new((1u64 << square.id + 16));
+                            moves = &moves ^ &BitBoard::new(1u64 << square.id + 16);
                         }
                     }
                     else {
                         pawns = self.black_pawns;
                         moves = BitBoard::new((pawns.get_u64() & (9223372036854775808u64 >> 63 - square.id as u64)) >> 8u8);
-                        if Rank::Seventh == get_rank(square)  {
+                        if Rank::Seventh == get_rank(&square)  {
                             // HACK - dodać do bitboarda ^= (XOR_assign)
                             moves = &moves ^ &BitBoard::new((1u64 << (63 - square.id) + 16) |  (1u64 >> (63 - square.id) + 8));
                         }
                     }
                     // check if the squares are empty
                     moves = &moves & &!&self.chessboard;
+                    // moves = moves + pawn_attacks(side: Color, square: Square);
+
                     moves
                     // FIXME
 
@@ -222,18 +224,56 @@ pub mod board {
                     moves 
                 }
             }
+
         }
-        fn pawn_attacks(side: Color) {
 
-            // result attack bitboard
-            let attacks = 0u64;
+        fn pawn_attacks(side: Color, square: Square) -> BitBoard {
+            let attacks = BitBoard::new(0);
+            // identify possible attacks squares (keep in mind "square wrapping")
+            if let Color::White = side {
+                let initial_rank = get_rank(&square);
+                // left-up
+                let left_up = square.id + 7;
+                let right_up = square.id + 9;
 
-            // set piece on board
+
+                // check if it's not wrapping
+
+            }
 
             // white pawns
 
             // black pawns
+
+            return attacks;
         }
 
+
     }    
+}
+
+
+
+#[cfg(test)]
+mod tests {
+    use crate::*;
+    
+    #[test]
+    fn possible_first_pawn_moves() {
+        let mut board = Board::new();
+        board = board.start_game();
+        // let test = &board.white_pawns;
+        assert_eq!(format!("{}", &board.generate_moves(PieceType::Pawn, Color::White, get_square("H2"))), "\n--------\n--------\n--------\n--------\n-------1\n-------1\n--------\n--------");
+    }
+    #[test]
+    fn chessboard_initial_state() {
+        let mut board = Board::new();
+        board = board.start_game();
+        assert_eq!(format!("{}", &board.chessboard), "\n11111111\n11111111\n--------\n--------\n--------\n--------\n11111111\n11111111");
+    }
+
+    fn check_pieces_on_squares() {
+
+    }
+
 }
