@@ -61,6 +61,7 @@ pub mod board {
     impl Board {
         pub fn new() -> Board {
             Board {
+                // board squares are enumerated from A1 being the first square and H8 the last one
                 white_pawns: BitBoard::new(0b0000000011111111000000000000000000000000000000000000000000000000),
                 white_knights:  BitBoard::new(0b0100001000000000000000000000000000000000000000000000000000000000),
                 white_bishops:  BitBoard::new(0b0010010000000000000000000000000000000000000000000000000000000000),
@@ -235,6 +236,7 @@ pub mod board {
                 // left-up
                 let left_up = square.id + 7;
                 let right_up = square.id + 9;
+                
 
 
                 // check if it's not wrapping
@@ -252,6 +254,15 @@ pub mod board {
     }    
 }
 
+
+
+/**********************************\
+ ==================================
+ 
+                Tests
+ 
+ ==================================
+\**********************************/ 
 
 
 #[cfg(test)]

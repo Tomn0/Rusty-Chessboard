@@ -28,8 +28,44 @@ pub mod bitboard {
             let bitboard = BitBoard::new(new_val);
             return bitboard;
         }
+
+        fn power_of_two(n:u64) -> bool {
+            /// checks if the number n is a power of two
+            /// if so n & (n-1) should give 0 (ex: 16 (10000) & 15 (01111) = 0)
+            /// except 0 -> we add the condition that 
+            let mut m = *&n as i32;
+            return m != 0 &&  !(m & (m - 1)) != 0 ;
+        }
+
+        pub fn get_square_from_bitboard(bitboard: &BitBoard) -> Option<Square> {
+            
+            let BitBoard(mut v) = bitboard;
+            if !BitBoard::power_of_two(v) {
+                return None;
+            }
+            let mut count = 0;
+            while v != 1 {
+                v = v / 2;
+                count += 1;
+            }
+
+            let square: Square = BOARD_SQUARES[count];
+
+            return Some(square);
+        }
+
+
+
+
     }
 
+/**********************************\
+ ==================================
+ 
+            Implementation
+ 
+ ==================================
+\**********************************/ 
 
     // TODO: na razie do cech używane są obiekty jako wypozyczone i zwracany jest zawsze nowy Bitboard - mieć na uwadze czy to nie spowoduje problemów w dalszej perspektywie
     // BitBoard traits
@@ -169,6 +205,13 @@ pub mod bitboard {
 }
 
 
+/**********************************\
+ ==================================
+ 
+                Tests
+ 
+ ==================================
+\**********************************/ 
 
 #[cfg(test)]
 mod tests {
@@ -193,9 +236,23 @@ mod tests {
         println!("{}", right);
 
         assert_eq!(format!("{}", left), format!("{}", right));
-
-
     }
+
+    #[test]
+    fn bitboard_to_square() {
+        let bitboard = &BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000010000);
+        let result = &BitBoard::get_square_from_bitboard(&bitboard);
+        let left: Square;
+        match result {
+            Some(e) => left = *e,
+            None => panic!("The function returned 'None'"),
+        }
+        
+        let right = BOARD_SQUARES[4];
+
+        assert_eq!(left.id, right.id);
+    }
+
     #[test]
     fn chessboard_initial_state() {
         let mut board = Board::new();
