@@ -267,7 +267,7 @@ mod tests {
     fn chessboard_initial_state() {
         let mut board = Board::new();
         board = board.start_game();
-        assert_eq!(format!("{}", &board.chessboard), "\n11111111\n11111111\n--------\n--------\n--------\n--------\n11111111\n11111111");
+        assert_eq!(format!("{}", &board.chessboard()), "\n11111111\n11111111\n--------\n--------\n--------\n--------\n11111111\n11111111");
     }
 
 }

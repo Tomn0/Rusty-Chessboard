@@ -35,7 +35,8 @@ pub mod board {
 \**********************************/
 
     pub struct Board {
-        pub chessboard: BitBoard,
+        // TODO make all values private and implement getters/setters
+        chessboard: BitBoard,
 
         pub white_pawns: BitBoard,
         white_knights: BitBoard,
@@ -137,6 +138,17 @@ pub mod board {
             self.side_to_play = Color::White;
 
             self
+        }
+        // getters/setters
+
+        // immutable access
+        pub fn chessboard(&self) -> &BitBoard {
+            &self.chessboard
+        }
+
+        // mutable access
+        pub fn chessboard_mut(self) -> BitBoard {
+            self.chessboard
         }
 
 /**********************************\
@@ -361,7 +373,7 @@ mod tests {
     fn chessboard_initial_state() {
         let mut board = Board::new();
         board = board.start_game();
-        assert_eq!(format!("{}", &board.chessboard), "\n11111111\n11111111\n--------\n--------\n--------\n--------\n11111111\n11111111");
+        assert_eq!(format!("{}", &board.chessboard()), "\n11111111\n11111111\n--------\n--------\n--------\n--------\n11111111\n11111111");
     }
 
     #[test]
@@ -377,6 +389,17 @@ mod tests {
             let moves = board.generate_moves(PieceType::Pawn, Color::Black, BOARD_SQUARES[49]);
             assert_eq!(format!("{}", &moves), "\n--------\n--------\n-1------\n-1------\n--------\n--------\n--------\n--------");
         }
+
+        // {   
+        //     // test pawns advance moves when it is not their first move
+
+        //     // change board state
+        //     let mut fake_board = Board::new();
+        //     fake_board.white_pawns = BitBoard::new(0b0000000000000000000000000000000000000000000000001111111100000000);
+        //     fake_board.chessboard = BitBoard::new(0b1111111111111111000000000000000000000000000000001111111111111111);
+
+        //     let board = 
+        // }
     }
 
 }
