@@ -171,6 +171,15 @@ pub mod bitboard {
         }
     }
 
+    impl std::ops::BitXorAssign for BitBoard {
+
+        fn bitxor_assign(&mut self, rhs: Self){
+            let new_val = self.get_u64() ^ rhs.get_u64();
+            self.update(new_val);
+        }
+
+    }
+
     impl std::ops::Add for &BitBoard {
         /// Is used to add two bitboards together.
         /// For example: to count all possible piece moves we sum advance moves with capture moves
@@ -246,6 +255,18 @@ mod tests {
         println!("{}", right);
 
         assert_eq!(format!("{}", left), format!("{}", right));
+    }
+
+    #[test]
+    fn trait_testing() {
+        // BUG!!!
+        let mut bitboard1 = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000010001);
+        let bitboard2 = BitBoard::new(0b0000000000000000000000000000000000000000000000000000000000011001);
+        bitboard1 ^= bitboard2;
+
+        assert_eq!(*bitboard1.get_u64(), 8);
+
+
     }
 
     #[test]
